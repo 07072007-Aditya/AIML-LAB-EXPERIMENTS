@@ -1,0 +1,47 @@
+import pandas as pd
+import numpy as np
+
+# Read uploaded file (NO full path needed in Colab)
+df = pd.read_csv("Data@.csv")
+
+print("✅ File Loaded Successfully!\n")
+print("="*50)
+
+# Basic Info
+print("\n📌 First 5 Rows:")
+print(df.head())
+
+print("\n📌 Shape of Dataset:")
+print(df.shape)
+
+print("\n📌 Column Names:")
+print(df.columns)
+
+print("\n📌 Data Types:")
+print(df.dtypes)
+
+# Missing Values
+print("\n📌 Missing Values:")
+print(df.isnull().sum())
+
+# Statistical Summary
+print("\n Statistical Summary:")
+print(df.describe())
+
+# Numerical Analysis
+num_cols = df.select_dtypes(include=[np.number])
+
+print("\n📌 Mean:")
+print(num_cols.mean())
+
+print("\n📌 Minimum:")
+print(num_cols.min())
+
+print("\n📌 Maximum:")
+print(num_cols.max())
+
+print("\n✅ Analysis Completed Successfully!")
+
+import matplotlib.pyplot as plt
+df.plot.scatter(x="Python_Score", y="ML_Score")
+plt.show()
