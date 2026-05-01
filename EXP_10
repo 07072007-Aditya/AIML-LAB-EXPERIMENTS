@@ -1,0 +1,22 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data = pd.DataFrame({
+    'Hours_Studied': [2, 4, 6, 8, 10],
+    'Marks': [50, 60, 70, 90, 95],
+    'Sleep_Hours': [6, 7, 5, 6, 8]
+})
+
+print("Dataset:\n", data)
+
+data.hist()
+plt.show()
+
+sns.scatterplot(x=data['Hours_Studied'], y=data['Marks'])
+plt.title("Hours Studied vs Marks")
+plt.show()
+
+sns.heatmap(data.corr(), annot=True)
+plt.title("Correlation Heatmap")
+plt.show()
