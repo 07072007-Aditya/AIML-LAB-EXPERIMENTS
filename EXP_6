@@ -1,0 +1,41 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+data = pd.DataFrame({
+    'Hours_Studied': [2, 4, None, 8, 100],   
+    'Marks': [50, None, 70, 90, 95],
+    'Sleep_Hours': [6, 7, 5, None, 20]     
+})
+
+print("Original Dataset:\n", data)
+
+data_filled = data.fillna(data.mean(numeric_only=True))
+
+print("\nAfter Filling Missing Values:\n", data_filled)
+
+Q1 = data_filled.quantile(0.25)
+Q3 = data_filled.quantile(0.75)
+IQR = Q3 - Q1
+
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+print("\nLower Bound:\n", lower_bound)
+print("\nUpper Bound:\n", upper_bound)
+
+outliers = ((data_filled < lower_bound) | (data_filled > upper_bound))
+print("\nOutliers Detected:\n", outliers)
+
+data_no_outliers = data_filled[~((data_filled < lower_bound) | (data_filled > upper_bound)).any(axis=1)]
+
+print("\nDataset after removing outliers:\n", data_no_outliers)
+
+plt.figure()
+data_filled.plot(kind='box')
+plt.title("Before Removing Outliers")
+plt.show()
+
+plt.figure()
+data_no_outliers.plot(kind='box')
+plt.title("After Removing Outliers")
+plt.show()
