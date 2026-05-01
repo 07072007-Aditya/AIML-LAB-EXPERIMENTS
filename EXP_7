@@ -1,0 +1,53 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+data = pd.DataFrame({
+    'Hours_Studied': [2, 4, 6, 8, 3, 5, 7, 9, 1, 10, 6, 4],
+    'Marks': [50, 60, 70, 90, 55, 65, 75, 95, 45, 98, 72, 68]
+})
+
+print("Original Dataset:\n", data)
+
+num_features = ['Hours_Studied', 'Marks']
+
+minmax = MinMaxScaler()
+minmax_df = pd.DataFrame(minmax.fit_transform(data[num_features]), columns=num_features)
+
+print("\nMin-Max Normalization:\n", minmax_df)
+scaler = StandardScaler()
+zscore_df = pd.DataFrame(scaler.fit_transform(data[num_features]), columns=num_features)
+
+print("\nZ-Score Normalization (Standard Deviation):\n", zscore_df)
+mean = data[num_features].mean()
+mad = (abs(data[num_features] - mean)).mean()
+zscore_mad_df = (data[num_features] - mean) / mad
+
+print("\nZ-Score using Mean Absolute Deviation:\n", zscore_mad_df)
+def decimal_scaling(col):
+    max_val = col.abs().max()
+    j = len(str(int(max_val)))
+    return col / (10 ** j)
+
+decimal_df = data[num_features].apply(decimal_scaling)
+
+print("\nDecimal Scaling:\n", decimal_df)
+
+def plot_graph(title, df):
+    plt.figure()
+    for col in df.columns:
+        plt.plot(df[col], marker='o', label=col)
+    plt.title(title)
+    plt.xlabel("Index")
+    plt.ylabel("Values")
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+plot_graph("Original Data", data[num_features])
+plot_graph("Min-Max Normalization", minmax_df)
+plot_graph("Z-Score (Standard Deviation)", zscore_df)
+plot_graph("Z-Score (MAD)", zscore_mad_df)
+plot_graph("Decimal Scaling", decimal_df)
+print("\nFinal Dataset (Z-score Normalized):\n", zscore_df)
