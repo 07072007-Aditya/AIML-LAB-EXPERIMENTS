@@ -1,0 +1,21 @@
+from imblearn.over_sampling import RandomOverSampler
+import pandas as pd
+
+data = pd.DataFrame({
+    'Feature1': [1, 2, 3, 4, 5, 6],
+    'Feature2': [10, 20, 30, 40, 50, 60],
+    'Target': [0, 0, 0, 0, 1, 1]
+})
+
+print("Original Dataset:\n", data)
+print("\nOriginal Class Distribution:\n", data['Target'].value_counts())
+X = data.drop("Target", axis=1)
+y = data["Target"]
+
+ros = RandomOverSampler()
+X_res, y_res = ros.fit_resample(X, y)
+
+balanced_data = pd.concat([X_res, y_res], axis=1)
+
+print("\nBalanced Dataset:\n", balanced_data)
+print("\nBalanced Class Distribution:\n", y_res.value_counts())
